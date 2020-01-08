@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlanePilot : MonoBehaviour
 {
-    float speed = 90.0f;
+    float speed = 50.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,16 +16,17 @@ public class PlanePilot : MonoBehaviour
     {
 
       Vector3 moveCamTo = transform.position - transform.forward * 10.0f + Vector3.up * 5.0f;
-      Camera.main.transform.position = moveCamTo;
+      float bias = 0.96f;
+      Camera.main.transform.position = Camera.main.transform.position*bias + moveCamTo*(1.0f-bias);
 
-      Camera.main.transform.LookAt( transform.position );
+      Camera.main.transform.LookAt( transform.position + transform.forward*30.0f);
 
         transform.position += transform.forward * Time.deltaTime * speed;
 
-        speed -= transform.forward.y * Time.deltaTime * 50.0f;
+        speed -= transform.forward.y * Time.deltaTime * 2.0f;
 
-        if(speed < 35.0f){
-          speed = 35.0f;
+        if(speed < 3.0f){
+          speed = 3.0f;
         }
 
         transform.Rotate(Input.GetAxis("Vertical"), 0.0f, -Input.GetAxis("Horizontal"));
